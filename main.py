@@ -10,17 +10,18 @@ def get_coordinates(city, key):
             lat = round(results[0]['geometry']['lat'], 2)
             lon = round(results[0]['geometry']['lng'], 2)
             country = results[0]['components']['country']
+            currency = results[0]['annotations']['currency']['name']
             osm_url = f"https://www.openstreetmap.org/?mlat={lat}&mlon={lon}"
 
             if 'state' in results[0]['components']:
                 region = results[0]['components']['state']
                 return {
-                    "coordinates": f"Широта: {lat}, Долгота: {lon},\n Страна: {country}.\nРегион: {region}",
+                    "coordinates": f"Широта: {lat}, Долгота: {lon},\n Страна: {country}.\nРегион: {region},\nВалюта: {currency}",
                     "map_url": osm_url
                         }
             else:
                 return {
-                    "coordinates": f"Широта: {lat}, Долгота: {lon},\n Страна: {country}.\n",
+                    "coordinates": f"Широта: {lat}, Долгота: {lon},\n Страна: {country}.\nВалюта: {currency}",
                     "map_url": osm_url
                         }
         else:
@@ -42,13 +43,17 @@ def show_map():
     if map_url:
         webbrowser.open(map_url)
 
+
+def del_entry():
+    entry.delete(0, END)
+
 map_url = ""
 
 key = '916a0bf01c304190b276f55b2c35b23e'
 
 window = Tk()
 window.title("Координаты городов")
-window.geometry("300x160")
+window.geometry("300x200")
 
 entry = Entry()
 entry.pack()
@@ -62,5 +67,8 @@ label.pack()
 
 map_button = Button(text="Показать карту", command=show_map)
 map_button.pack()
+
+del_button = Button(text="Очистить", command=del_entry)
+del_button.pack()
 
 window.mainloop()
