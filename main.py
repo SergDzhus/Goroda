@@ -10,8 +10,11 @@ def get_coordinates(city, key):
             lat = round(results[0]['geometry']['lat'], 2)
             lon = round(results[0]['geometry']['lng'], 2)
             country = results[0]['components']['country']
-            region = results[0]['components']['state']
-            return f"Широта: {lat}, Долгота: {lon}, Страна: {country}, Регион: {state}"
+            if 'state' in results[0]['components']:
+                region = results[0]['components']['state']
+                return f"Широта: {lat}, Долгота: {lon},\n Страна: {country}.\n Регион: {region}"
+            else:
+                return f"Широта: {lat}, Долгота: {lon},\n Страна: {country}"
         else:
             return ("Город ненайден")
     except Exception as e:
@@ -27,7 +30,7 @@ key = '916a0bf01c304190b276f55b2c35b23e'
 
 window = Tk()
 window.title("Координаты городов")
-window.geometry("300x100")
+window.geometry("300x150")
 
 entry = Entry()
 entry.pack()
