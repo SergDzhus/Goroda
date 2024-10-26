@@ -25,7 +25,7 @@ def get_coordinates(city, key):
                     "map_url": osm_url
                         }
         else:
-            return ("Город ненайден")
+            return ("Город не найден!")
     except Exception as e:
         return f"Возникла ошибка: {e}!"
 
@@ -34,8 +34,11 @@ def show_coordinates(event=None):
     global map_url
     city = entry.get()
     result = get_coordinates(city, key)
-    label.config(text=f"Координаты города {city}:\n {result['coordinates']}")
-    map_url = result['map_url']
+    try:
+        label.config(text=f"Координаты города {city}:\n {result['coordinates']}")
+        map_url = result['map_url']
+    except Exception:
+        label.config(text=result)
 
 
 def show_map():
